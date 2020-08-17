@@ -17,20 +17,23 @@ function searchItem(title, artist){
 }
 
 function searchAction(){
-    fetch(`https://api.lyrics.ovh/suggest/${searchInput.value}`)
-    .then(response => response.json())
-    .then(data => {
-        data.data.map((item, index) => {
-            if(index < 10){
-                singleResult = document.createElement('div');
-                const classList = ["single-result", "row", "align-items-center", "my-3", "p-3"];
-                singleResult.classList.add(...classList);    
-                singleResult.innerHTML = searchItem(item.title, item.artist.name);
-                searchResult.appendChild(singleResult);
-                }
+    if(searchInput.value){
+        searchResult.innerHTML = "";    
+        fetch(`https://api.lyrics.ovh/suggest/${searchInput.value}`)
+        .then(response => response.json())
+        .then(data => {
+            data.data.map((item, index) => {
+                if(index < 10){
+                    singleResult = document.createElement('div');
+                    const classList = ["single-result", "row", "align-items-center", "my-3", "p-3"];
+                    singleResult.classList.add(...classList);    
+                    singleResult.innerHTML = searchItem(item.title, item.artist.name);
+                    searchResult.appendChild(singleResult);
+                    }
+            })
         })
-    })
-    .catch(err => alert(err));
+        .catch(err => alert(err));
+    }
 }
 
 function lyricsFind(artist, title, div){
